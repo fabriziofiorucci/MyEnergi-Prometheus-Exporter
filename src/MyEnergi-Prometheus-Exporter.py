@@ -71,17 +71,31 @@ def poll_myenergi():
 
 
 def update_harvi_metric(harvi_json: dict):
-  harvi.labels(name=harvi_json['ectt1'],variable='ectp1').set(harvi_json['ectp1'])
-  harvi.labels(name=harvi_json['ectt2'],variable='ectp2').set(harvi_json['ectp2'])
+  if 'ectt1' in harvi_json and 'ectp1' in harvi_json:
+    harvi.labels(name=harvi_json['ectt1'],variable='ectp1').set(harvi_json['ectp1'])
+
+  if 'ectt2' in harvi_json and 'ectp2' in harvi_json:
+    harvi.labels(name=harvi_json['ectt2'],variable='ectp2').set(harvi_json['ectp2'])
 
 
 def update_eddi_metric(eddi_json: dict):
-  eddi.labels(name='solar',variable='gen').set(eddi_json['gen'])
-  eddi.labels(name='grid',variable='grd').set(eddi_json['grd'])
-  eddi.labels(name='diverter',variable='div').set(eddi_json['div'])
-  eddi.labels(name='tank1',variable='ectp1').set(eddi_json['ectp1'])
-  eddi.labels(name='tank1_total',variable='che').set(eddi_json['che'])
-  eddi.labels(name='frequency',variable='frq').set(eddi_json['frq'])
+  if 'gen' in eddi_json:
+    eddi.labels(name='solar',variable='gen').set(eddi_json['gen'])
+
+  if 'grd' in eddi_json:
+    eddi.labels(name='grid',variable='grd').set(eddi_json['grd']) if
+
+  if 'div' in eddi_json:
+    eddi.labels(name='diverter',variable='div').set(eddi_json['div'])
+
+  if 'ectp1' in eddi_json:
+    eddi.labels(name='tank1',variable='ectp1').set(eddi_json['ectp1'])
+
+  if 'che' in eddi_json:
+    eddi.labels(name='tank1_total',variable='che').set(eddi_json['che'])
+
+  if 'frq' in eddi_json:
+    eddi.labels(name='frequency',variable='frq').set(eddi_json['frq'])
 
 
 def update_libbi_metric(libbi_json: dict):
