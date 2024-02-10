@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myenergi
+  labels:
+    app: myenergi
+spec:
+  selector:
+    matchLabels:
+      app: myenergi
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: myenergi
+    spec:
+      containers:
+      - name: myenergi
+        image: <DOCKER_IMAGE_NAME>
+        ports:
+        - containerPort: 8000
+        env:
+          - name: USERNAME
+            value: "<MYENERGI_USERNAME>"
+          - name: APIKEY
+            value: "<MYENERGI_API_KEY>"
+
+          - name: SERVER
+            #value: "<MYENERGI_SERVER>"
+            value: "https://s18.myenergi.net"
+          - name: PORT
+            value: "8000"
+
+          - name: ENABLE_EDDI
+            value: "True"
+          - name: ENABLE_HARVI
+            value: "True"
+          - name: ENABLE_ZAPPI
+            value: "False"
+          - name: ENABLE_LIBBI
+            value: "False"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myenergi
+  labels:
+    app: myenergi
+spec:
+  ports:
+  - name: prometheus
+    port: 8000
+  selector:
+    app: myenergi
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: myenergi
+  labels:
+    app: myenergi
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: <YOUR_PREFERRED_FQDN>
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myenergi
+                port:
+                  number: 8000
