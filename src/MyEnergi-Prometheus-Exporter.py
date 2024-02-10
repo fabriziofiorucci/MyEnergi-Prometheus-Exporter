@@ -83,7 +83,7 @@ def update_eddi_metric(eddi_json: dict):
     eddi.labels(name='solar',variable='gen').set(eddi_json['gen'])
 
   if 'grd' in eddi_json:
-    eddi.labels(name='grid',variable='grd').set(eddi_json['grd']) if
+    eddi.labels(name='grid',variable='grd').set(eddi_json['grd'])
 
   if 'div' in eddi_json:
     eddi.labels(name='diverter',variable='div').set(eddi_json['div'])
